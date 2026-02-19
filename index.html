@@ -1,31 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Book Finder</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'affiches de livres</title>
     <script>
         async function searchBooks() {
-            const query = document.getElementById('searchInput').value;
-            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+            const query = document.getElementById('query').value;
+            const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${query}&langRestrict=fr`);
             const data = await response.json();
-            const resultsContainer = document.getElementById('results');
-            resultsContainer.innerHTML = '';
+            displayResults(data.items);
+        }
 
-            if (data.items) {
-                data.items.forEach(item => {
-                    const bookElement = document.createElement('div');
-                    bookElement.innerHTML = `<h3>${item.volumeInfo.title}</h3>`;
-                    resultsContainer.appendChild(bookElement);
-                });
-            } else {
-                resultsContainer.innerHTML = 'No books found.';
-            }
+        function displayResults(books) {
+            const resultDiv = document.getElementById('results');
+            resultDiv.innerHTML = '';
+            books.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book';
+                const title = book.volumeInfo.title;
+                const authors = book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Inconnu';
+                const poster = book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : 'no_image.png';
+                bookDiv.innerHTML = `<h3>${title}</h3><p>Auteur(s): ${authors}</p><img src='${poster}' alt='${title}'>`;
+                resultDiv.appendChild(bookDiv);
+            });
         }
     </script>
+    <style>
+        .book { margin: 10px; border: 1px solid #ccc; padding: 10px; }
+        img { max-width: 100px; }
+    </style>
 </head>
 <body>
-    <h1>Search for Books</h1>
-    <input type="text" id="searchInput" placeholder="Enter book title..."/>
-    <button onclick="searchBooks()">Search</button>
-    <div id="results"></div>
+    <h1>Générateur d'affiches de livres</h1>
+    <input type='text' id='query' placeholder='Entrez le titre de livre' />
+    <button onclick='searchBooks()'>Rechercher</button>
+    <div id='results'></div>
 </body>
 </html>
