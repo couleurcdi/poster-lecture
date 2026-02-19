@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Poster de Livre</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 80%; margin: auto; }
+        h1 { text-align: center; }
+        form { margin-bottom: 20px; }
+        .preview { border: 1px solid #ccc; padding: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Poster de Livre</h1>
+        <form id="posterForm">
+            <label for="title">Titre du Livre:</label><br>
+            <input type="text" id="title" name="title" required><br><br>
+            <label for="author">Auteur:</label><br>
+            <input type="text" id="author" name="author" required><br><br>
+            <input type="submit" value="Générer le Poster">
+        </form>
+        <div class="preview" id="posterPreview">
+            <h2>Prévisualisation du Poster</h2>
+            <p id="previewTitle" style="font-size: 24px; font-weight: bold;"></p>
+            <p id="previewAuthor" style="font-size: 20px;"></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById('posterForm').onsubmit = function(e) {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+            document.getElementById('previewTitle').textContent = title;
+            document.getElementById('previewAuthor').textContent = 'par ' + author;
+        };
+    </script>
+</body>
+</html>
